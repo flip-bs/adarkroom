@@ -645,8 +645,8 @@ var World = {
 		if(!World.seenAll){
 			var x,y,mask = $SM.get('game.world.mask');
 			do {
-				x = Math.floor(Math.random() * (World.RADIUS * 2) + 1);
-				y = Math.floor(Math.random() * (World.RADIUS * 2) + 1);
+				x = Math.floor(Math.random() * (World.RADIUS * 2 + 1));
+				y = Math.floor(Math.random() * (World.RADIUS * 2 + 1));
 			} while (mask[x][y]);
 			World.uncoverMap(x, y, 5, mask);
 		}
@@ -774,12 +774,13 @@ var World = {
 
 		var chances = {};
 		var nonSticky = 1;
+		var cur;
 		for(var i in adjacent) {
 			if(adjacent[i] == World.TILE.VILLAGE) {
 				// Village must be in a forest to maintain thematic consistency, yo.
 				return World.TILE.FOREST;
 			} else if(typeof adjacent[i] == 'string') {
-				var cur = chances[adjacent[i]];
+				cur = chances[adjacent[i]];
 				cur = typeof cur == 'number' ? cur : 0;
 				chances[adjacent[i]] = cur + World.STICKINESS;
 				nonSticky -= World.STICKINESS;
@@ -788,7 +789,7 @@ var World = {
 		for(var t in World.TILE) {
 			var tile = World.TILE[t];
 			if(World.isTerrain(tile)) {
-				var cur = chances[tile];
+				cur = chances[tile];
 				cur = typeof cur == 'number' ? cur : 0;
 				cur += World.TILE_PROBS[tile] * nonSticky;
 				chances[tile] = cur;
